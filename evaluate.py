@@ -3,7 +3,6 @@ import time
 import json
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import TfidfVectorizer
 from rank_bm25 import BM25Okapi
 from sentence_transformers import SentenceTransformer
