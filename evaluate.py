@@ -118,30 +118,26 @@ def evaluate_retrieval(chunks, gold_set, resources):
     
     return pd.DataFrame(results)
 
+# Replace the matplotlib visualization with this Streamlit version
 def generate_report(df):
-    print("\n=== Evaluation Report ===")
-    print(df.to_markdown(index=False))
+    st.write("\n### Evaluation Results")
+    st.table(df)
     
-    # Visualization
-    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 5))
+    # Create columns for metrics
+    col1, col2, col3 = st.columns(3)
     
-    # Accuracy plot
-    ax1.bar(df["Method"], df["Accuracy"])
-    ax1.set_title("Accuracy on Answerable Questions")
-    ax1.set_ylim(0, 1)
+    with col1:
+        st.write("**Accuracy on Answerable Questions**")
+        st.bar_chart(df.set_index("Method")["Accuracy"])
     
-    # False Positive plot
-    ax2.bar(df["Method"], df["False Positive Rate"])
-    ax2.set_title("False Positive Rate")
-    ax2.set_ylim(0, 1)
+    with col2:
+        st.write("**False Positive Rate**")
+        st.bar_chart(df.set_index("Method")["False Positive Rate"])
     
-    # Latency plot
-    ax3.bar(df["Method"], df["Avg Latency (ms)"])
-    ax3.set_title("Average Query Latency (ms)")
-    
-    plt.tight_layout()
-    plt.savefig("evaluation_results.png")
-    print("\nSaved visualization to evaluation_results.png")
+    with col3:
+        st.write("**Average Latency (ms)**")
+        st.bar_chart(df.set_index("Method")["Avg Latency (ms)"])
+
 
 def analyze_failures(chunks, gold_set, resources):
     print("\n=== Failure Analysis ===")
